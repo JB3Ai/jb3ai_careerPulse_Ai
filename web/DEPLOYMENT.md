@@ -2,41 +2,26 @@
 
 ## Quick Start (Recommended: Railway.app)
 
-Railway is the easiest path — connects to your GitHub repo, builds automatically.
+Railway is the easiest path — `railway.json` is already in the repo, so no manual config needed.
 
-### 1. Push to GitHub
-Your code is already pushed: https://github.com/JB3Ai/jb3ai_careerPulse_Ai.git
-
-### 2. Connect to Railway
+### 1. Deploy from GitHub
 1. Go to [railway.app](https://railway.app) → Sign up/login
 2. Click **New Project** → **Deploy from GitHub repo**
 3. Select `JB3Ai/jb3ai_careerPulse_Ai`
-4. Set **Build Command** to: `cd career-ops/web && npm install && npm run build`
-5. Set **Start Command** to: `cd career-ops/web && node server.js`
-6. Set **Port** to `3000`
+4. Railway auto-detects `railway.json` — Build/Start commands are pre-configured
 
-### 3. Add Persistent Storage (Required)
-The app reads/writes markdown files (`data/`, `config/`, etc.) — these need persistent volume storage.
-
-**Option A — Git-synced data (simplest):**
-Add your `data/`, `config/`, `reports/`, `modes/`, `cv.md`, and `portals.yml` directly inside the `career-ops/` directory (not just in `career-ops/data/`). Commit them to the repo so they deploy with the code.
-
-⚠️ **Warning:** Tracking sensitive documents (PDFs, DOCX) in git means anyone who finds your credentials can see them. Only do this if acceptable.
-
-**Option B — Separate persistent volume:**
-Keep data on a separate VPS (see "Self-hosted" below). Use an API-based solution instead of file reads.
-
-### 4. Environment Variables
-Add these in Railway dashboard:
+### 2. Add Environment Variables
+In Railway dashboard → Variables, add:
 ```
 NODE_ENV=production
 PORT=3000
 PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
-CAREER_OPS_ROOT=/app/career-ops  # tells the app where the project root is
 ```
 
-### 5. Deploy
-Click **Deploy** — wait ~2-3 min. Railway gives you a public URL (e.g. `career-ops-abcd123.railway.app`).
+### 3. Deploy
+Click **Deploy** — wait ~3-4 min (first build includes Playwright Chromium). Railway gives you a public URL like `career-ops-abcd123.up.railway.app`.
+
+⚠️ **Data persistence:** The app reads/writes markdown files (`data/`, `config/`, etc.). On Railway these are ephemeral between deploys — your data lives on your local machine, not on Railway. For remote access, see "Self-hosted" below which gives you full control over data storage.
 
 ---
 
