@@ -1,0 +1,26 @@
+# Node & Git
+node_modules
+.git
+.gitignore
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode
+.idea
+
+# Docker
+docker-compose*.yml
+Dockerfile
+
+# Docs (not needed in container)
+DEPLOYMENT.md
+CHANGELOG.md
+tests
+
+# Build artifacts
+.next

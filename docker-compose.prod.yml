@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  career-ops-web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    restart: unless-stopped
+    # Mount data dirs — these are your job-search markdown files
+    # Run with: docker compose -f docker-compose.prod.yml up --build -d
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./reports:/app/reports
+      - ./modes:/app/modes
+      - ./cv.md:/app/cv.md
+      - ./portals.yml:/app/portals.yml
+      - next-cache:/app/node_modules/.cache
+      - web-state:/app/.next/cache
+
+volumes:
+  next-cache:
+  web-state:
