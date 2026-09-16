@@ -30,4 +30,4 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/usr/local/bin/chromium-browser
 
 EXPOSE 3000
 
-CMD ["dumb-init", "--", "node", "server.js"]
+CMD ["dumb-init", "npx", "--", "next", "start"]
