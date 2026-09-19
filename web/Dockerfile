@@ -30,5 +30,13 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/usr/local/bin/chromium-browser
 
 EXPOSE 3000
 
+# Ensure persistent volume mount-point exists (created by Dockerfile so it
+# survives even if the container filesystem is rebuilt from scratch).
+RUN mkdir -p /data /config /reports /modes && \
+    chown -R nobody:nogroup /data /config /reports /modes
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://localhost:3000/api/doctor || exit 1
+
 # Start Next.js production server
 CMD ["node", "node_modules/.bin/next", "start"]

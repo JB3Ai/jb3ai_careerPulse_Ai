@@ -15,15 +15,31 @@ In Railway dashboard → Variables, add:
 ```
 NODE_ENV=production
 PORT=3000
-PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+PLAYWRIGHT_BROWSERS_PATH=/usr/local/bin/chromium-browser
+OPENROUTER_API_KEY=<your-key-from-openrouter.ai>
+GEMINI_API_KEY=<your-key-from-aistudio.google.com>
 ```
 
 ### 3. Deploy
 Click **Deploy** — wait ~3-4 min (first build includes Playwright Chromium). Railway gives you a public URL like `career-ops-abcd123.up.railway.app`.
 
-⚠️ **Data persistence:** The app reads/writes markdown files (`data/`, `config/`, etc.). On Railway these are ephemeral between deploys — your data lives on your local machine, not on Railway. For remote access, see "Self-hosted" below which gives you full control over data storage.
+⚠️ **Data persistence:** The app reads/writes markdown files (`data/`, `config/`, etc.). On Railway these are ephemeral between deploys — your data lives on your local machine, not on Railway. See **"Persistent volume"** below for zero-loss deployment. For remote access, see "Self-hosted" below which gives you full control over data storage.
 
----
+### Persistent volume (recommended)
+
+Railway paid plans support block storage. Add a volume so `data/` survives redeployments:
+
+1. In Railway dashboard → **Settings** tab → **Volumes** → **Create Volume**
+2. Name: `data-volume`
+3. Mount path: `/data`
+4. Select your service, click **Create**
+5. **Minimum $5/mo** (voluntary minimum plan) — costs scale with usage
+
+The `.railway/railway.json` includes `meta.volumeMountPath` which auto-registers the volume when deploying from GitHub. No manual dashboard clicks needed — just push this commit and deploy.
+
+**Cost:** $0 during free trial (first 90 days or until usage caps), then $5/mo volunteer minimum + storage based on dataset size (~$1 per GB/month).
+
+> Your job search data is small (typically < 5 MB across pipeline, scan history, config files). Expect <$1/month of storage overhead above the $5 base.
 
 ## Self-hosted (Docker Compose on a Cheap VPS)
 
